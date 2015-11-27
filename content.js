@@ -38,7 +38,7 @@ function vkClick(btn) {
 }
 
 function isPlaying() {
-	return document.querySelector('#head_play_btn').className.indexOf('playing') > -1
+  return document.querySelector('#head_play_btn').className.indexOf('playing') > -1
 }
 
 function isAudioTab() {
