@@ -1,0 +1,28 @@
+{
+  "manifest_version": 2,
+  "name": "vkmb",
+  "description": "Control vk.com music player",
+  "version": "0.2",
+  "content_scripts": [
+    {
+      "matches": ["http://vk.com/*", "https://vk.com/*"],
+      "js": ["content.js"]
+    }
+  ],
+  "permissions": [
+    "tabs", "http://vk.com/*", "https://vk.com/*"
+  ],
+  "background": {
+    "scripts": ["bg.js"]
+  },
+  "commands": {
+    "prev": { "description": "Previous song" },
+    "play": { "description": "Play" },
+    "pause": { "description": "Pause" },
+    "next": { "description": "Next song" },
+    "add": { "description": "Add current song" },
+    "repeat": { "description": "Toggle repeat" },
+    "shuffle": { "description": "Toggle shuffle" }
+  }
+}
+
