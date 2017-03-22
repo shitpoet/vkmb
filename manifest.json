@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "vkmb",
   "description": "Control vk.com music player",
-  "version": "0.3",
+  "version": "0.4",
   "content_scripts": [
     {
       "matches": ["http://vk.com/*", "https://vk.com/*"],
@@ -23,6 +23,9 @@
     "add": { "description": "Add current song" },
     "repeat": { "description": "Toggle repeat" },
     "shuffle": { "description": "Toggle shuffle" }
+  },
+   "icons": {
+    "16": "icon-16.png"
   }
 }
 
