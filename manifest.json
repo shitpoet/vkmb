@@ -22,7 +22,8 @@
     "next": { "description": "Next song" },
     "add": { "description": "Add current song" },
     "repeat": { "description": "Toggle repeat" },
-    "shuffle": { "description": "Toggle shuffle" }
+    "shuffle": { "description": "Toggle shuffle" },
+    "activate": { "description": "Activate playing tab" }
   },
    "icons": {
     "16": "icon-16.png"

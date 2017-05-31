@@ -91,3 +91,14 @@ chrome.commands.onCommand.addListener(function(command) {
 })
 
 
+chrome.extension.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    console.log('vkmb: message', request)
+    let tab = sender.tab
+    if (request.activate) {
+      chrome.tabs.update(tab.id, {active: true});
+    } else {
+      console.log('vkmb: unknown request', request)
+    }
+  }
+)

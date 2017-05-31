@@ -1,28 +1,31 @@
+// in this module we execute commands from background script
+
 console.log('vkmb')
 
-// works at least for vk.com 2015-08-16
-// for pre 2016 design
-/*function tryVkClick(btn, t) {
-  console.log("vkmb tryVkClick("+btn+", "+t+")")
-  setTimeout(function() {
-    if (document.getElementById('pd_'+btn)) {
-      document.getElementById('pd_'+btn).click();
-      document.getElementById('head_music').click();
-    } else {
-      if (t < 5000) {
-        tryVkClick(btn, t * 2 + 100) // 20 140 380 860 1820 ~4000
-      } else {
-        // still no button... operation failed, so just hide playlist
-        document.getElementById('head_music').click()
-      }
-    }
-  }, t)
-}*/
+// simulate click
+function sim_click(btn) {
+  //console.log('vkmb sim_click on',btn);
+  let e1 = document.createEvent('MouseEvents');
+  let e2 = document.createEvent('MouseEvents');
+  let e3 = document.createEvent('MouseEvents');
+  let e4 = document.createEvent('MouseEvents')
+  e1.initEvent('mouseover', true, false);
+  e2.initEvent('mousedown', true, false);
+  e3.initEvent('mouseup', true, false)
+  e4.initEvent('mouseout', true, false);
+  btn.dispatchEvent( e1 );
+  btn.dispatchEvent( e2 );
+  btn.dispatchEvent( e3 )
+  btn.dispatchEvent( e4 );
+  btn.click();
+}
 
-function tryVkClick(btn, t) {
-  console.log("vkmb tryVkClick v2 ("+btn+", "+t+")")
+function tryVkClick(btn, t, close) {
+  t |= 0
+  //console.log("vkmb tryVkClick v3 ("+btn+", "+t+")")
   setTimeout(function() {
-    var top_audio = document.getElementById('top_audio').classList.contains('active')
+    var top_audio = document.getElementById('top_audio_player')
+    var player_loaded = window.top_audio_layer_place.children.length > 0
     var sel1
     if (btn == 'play' || btn == 'prev' || btn == 'next')
       sel1 = '.audio_page_player_ctrl.audio_page_player_'+btn
@@ -33,15 +36,16 @@ function tryVkClick(btn, t) {
     var el2 = document.querySelector(sel2)
     if (el1) {
       el1.click()
-    } else if (top_audio && el2) {
+    } else if (player_loaded && el2) {
       el2.click()
+      if (close) sim_click(top_audio);
     } else {
-      document.getElementById('top_audio').click();
+      sim_click(top_audio);
       if (t < 5000) {
-        tryVkClick(btn, t * 2 + 100) // 20 140 380 860 1820 ~4000
+        tryVkClick(btn, t + 50, true)
       } else {
         // still no button... operation failed, so just hide playlist
-        document.getElementById('top_audio').click()
+        sim_click(top_audio);
       }
     }
   }, t)
@@ -70,10 +74,16 @@ function isAudioTab() {
 
 // executes action
 // return true if action was executed
-function doAction(req) {
+function do_action(req) {
   var action = req.action
   var playing = isPlaying()
-  if (
+  if (req.action == 'activate') {
+    console.log('vkmb: activate')
+    console.log('vkmb: current page is playing - ', playing)
+    if (playing) {
+      chrome.runtime.sendMessage({activate: true})
+    }
+  } else if (
     (req.numtabs == 1) ||
     (
       ((req.action == 'play') && req.lastactive && !playing) ||
@@ -107,7 +117,7 @@ chrome.extension.onMessage.addListener(
   function(request, sender, sendResponse) {
     console.log('vkmb: request: ', request)
     sendResponse({
-      result: doAction(request),
+      result: do_action(request),
       audio: isAudioTab(),
       tabid: request.tabid
     })
@@ -119,4 +129,5 @@ chrome.extension.onMessage.addListener(
 var sheet = document.styleSheets[0]
 sheet.insertRule('.emoji_smile_wrap { display: none }')
 sheet.insertRule('.public_help_steps_module { display: none }')
+sheet.insertRule('.im-chat-input--attach { right: 4px }')
 
