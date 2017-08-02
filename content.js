@@ -127,7 +127,7 @@ chrome.extension.onMessage.addListener(
 // "change" design a little
 //document.querySelector('body').style.backgroundColor = 'white'
 var sheet = document.styleSheets[0]
-sheet.insertRule('.emoji_smile_wrap { display: none }')
+//sheet.insertRule('.emoji_smile_wrap { display: none }')
 sheet.insertRule('.public_help_steps_module { display: none }')
-sheet.insertRule('.im-chat-input--attach { right: 4px }')
+//sheet.insertRule('.im-chat-input--attach { right: 4px }')
 
